@@ -9,6 +9,7 @@ import { LeaderboardModal } from './components/modals/LeaderboardModal';
 import { LiveCheckerModal } from './components/modals/LiveCheckerModal';
 import { ResetModal } from './components/modals/ResetModal';
 import { AdminPanelModal } from './components/modals/AdminPanelModal';
+import { ApiDocsModal } from './components/modals/ApiDocsModal';
 import { MemberLicenseGate } from './components/modals/MemberLicenseGate';
 import {
   StoredLicenseSession,
@@ -158,6 +159,7 @@ export default function App() {
   const [isBoardOpen, setIsBoardOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [isResetOpen, setIsResetOpen] = useState(false);
+  const [isApiDocsOpen, setIsApiDocsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Member License Session state
@@ -206,6 +208,10 @@ export default function App() {
             indexNumber: idx + 1,
             regionCode: o.countryCode || 'BD',
             regionName: o.countryName || 'Global',
+            name: o.name || generatePersonName(),
+            password: o.password || 'Pass@123456',
+            uid: o.uid || 'N/A',
+            version: o.version || 'v1',
             number: o.number,
             service: o.service || 'Facebook',
             serviceCode: o.serviceCode || 'fb',
@@ -214,11 +220,11 @@ export default function App() {
                 ? 'OTP_RECEIVED'
                 : o.status === 'WAITING_SMS'
                 ? 'WAITING_OTP'
-                : o.status,
+                : o.status || 'CREATED',
             createdAt: o.createdAt,
             createdTimeStr: o.createdTimeStr,
             expiresAt: o.expiresAt,
-            otpCode: o.smsCode,
+            otpCode: o.smsCode || o.otpCode,
             smsText: o.smsText,
             otpSender: o.service,
             rawProviderResponse: o.rawProviderResponse,
@@ -874,6 +880,7 @@ export default function App() {
         onOpenBoard={() => setIsBoardOpen(true)}
         onOpenWithdraw={() => setIsWithdrawOpen(true)}
         onReset={() => setIsResetOpen(true)}
+        onOpenApiDocs={() => setIsApiDocsOpen(true)}
         onLogout={() => {
           clearLicenseSession();
           setLicenseSession(null);
@@ -912,6 +919,7 @@ export default function App() {
           customPhoneInput={customPhoneInput}
           onChangeCustomPhone={setCustomPhoneInput}
           lastCreatedNotice={lastCreatedNotice}
+          onOpenApiDocs={() => setIsApiDocsOpen(true)}
         />
 
         {/* Live Stats Section */}
@@ -1043,6 +1051,13 @@ export default function App() {
         isOpen={isResetOpen}
         onClose={() => setIsResetOpen(false)}
         onConfirmReset={handleConfirmReset}
+      />
+
+      {/* VIP API Documentation & Tester Modal */}
+      <ApiDocsModal
+        isOpen={isApiDocsOpen}
+        onClose={() => setIsApiDocsOpen(false)}
+        onToast={showToast}
       />
     </div>
   );

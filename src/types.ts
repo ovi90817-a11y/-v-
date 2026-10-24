@@ -12,7 +12,8 @@ export interface AccountRecord {
   cookie?: string;
   service?: string; // e.g. 'Facebook'
   serviceCode?: string; // e.g. 'fb'
-  status: 'ACTIVE' | 'WAITING_OTP' | 'OTP_RECEIVED' | 'COMPLETED' | 'CANCELLED' | 'EXPIRED';
+  version?: string;
+  status: 'ACTIVE' | 'WAITING_OTP' | 'OTP_RECEIVED' | 'COMPLETED' | 'CANCELLED' | 'EXPIRED' | 'CREATED' | 'CHECKPOINT' | 'LIVE' | string;
   createdAt: number;
   createdTimeStr: string;
   expiresAt?: number;

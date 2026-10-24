@@ -1,4 +1,4 @@
-import { Wallet, BarChart3, ShieldCheck, Trophy, RotateCcw, LogOut, Shield, KeyRound } from 'lucide-react';
+import { Wallet, BarChart3, ShieldCheck, Trophy, RotateCcw, LogOut, Shield, KeyRound, Code2, Send } from 'lucide-react';
 import { StoredLicenseSession } from '../utils/deviceLicense';
 
 interface HeaderProps {
@@ -13,6 +13,7 @@ interface HeaderProps {
   onReset: () => void;
   onLogout: () => void;
   onOpenAdmin?: () => void;
+  onOpenApiDocs?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -27,15 +28,16 @@ export const Header: React.FC<HeaderProps> = ({
   onReset,
   onLogout,
   onOpenAdmin,
+  onOpenApiDocs,
 }) => {
   return (
-    <header className="w-full pt-4 pb-3 px-3 sm:px-6 border-b border-[#1b2234] bg-[#0b0f19]/90 backdrop-blur-md sticky top-0 z-30">
+    <header className="w-full pt-4 pb-3 px-3 sm:px-6 border-b border-[#1b2234] bg-[#0b0f19]/95 backdrop-blur-md sticky top-0 z-30 shadow-lg shadow-black/40">
       <div className="max-w-2xl mx-auto flex flex-col gap-3">
         {/* Brand identity */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Logo badge with gold emblem */}
-            <div className="relative w-11 h-11 rounded-full bg-gradient-to-br from-[#1e2738] to-[#0a0e17] border border-amber-400/40 p-0.5 shadow-lg shadow-amber-500/10 flex items-center justify-center shrink-0">
+            <div className="relative w-11 h-11 rounded-full bg-gradient-to-br from-[#1e2738] via-amber-950/40 to-[#0a0e17] border border-amber-400/50 p-0.5 shadow-lg shadow-amber-500/20 flex items-center justify-center shrink-0">
               <div className="w-full h-full rounded-full bg-black/90 flex flex-col items-center justify-center border border-amber-400/30">
                 <span className="text-[12px] font-black tracking-wider text-amber-400 leading-none">
                   {appShortName}
@@ -52,22 +54,45 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             <div className="flex flex-col">
-              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
-                {appName}
-              </h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
+                  <span>{appName}</span>
+                </h1>
+                <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500/20 via-yellow-400/20 to-amber-500/20 text-amber-300 border border-amber-400/50 font-black tracking-wider shadow-sm shadow-amber-500/20 flex items-center gap-1">
+                  👑 VIP
+                </span>
+              </div>
+              <span className="text-[11px] font-medium text-slate-400">
+                Smart Earning Z · Premium Automation Gateway
+              </span>
             </div>
           </div>
 
-          {/* Top Admin Panel Logo Button (NO text, only small logo to enter admin panel) */}
-          {onOpenAdmin && (
-            <button
-              type="button"
-              onClick={onOpenAdmin}
-              className="w-8 h-8 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:text-amber-300 border border-amber-500/30 hover:border-amber-400/60 transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+          <div className="flex items-center gap-2">
+            {/* Official Telegram Link */}
+            <a
+              href="https://t.me/Smart_Earning_Z"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Official Telegram Channel"
+              className="px-2.5 py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 border border-sky-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm hover:scale-105 active:scale-95"
             >
-              <Shield className="w-4 h-4 text-amber-400" />
-            </button>
-          )}
+              <Send className="w-3.5 h-3.5 fill-sky-400/20" />
+              <span className="hidden sm:inline">Telegram</span>
+            </a>
+
+            {/* Top Admin Panel Logo Button */}
+            {onOpenAdmin && (
+              <button
+                type="button"
+                onClick={onOpenAdmin}
+                title="Admin Control"
+                className="w-8 h-8 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:text-amber-300 border border-amber-500/30 hover:border-amber-400/60 transition-all flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+              >
+                <Shield className="w-4 h-4 text-amber-400" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Action badges and controls row */}
@@ -127,6 +152,18 @@ export const Header: React.FC<HeaderProps> = ({
             <Wallet className="w-3.5 h-3.5" />
             <span>Withdraw</span>
           </button>
+
+          {/* VIP API Docs Button */}
+          {onOpenApiDocs && (
+            <button
+              onClick={onOpenApiDocs}
+              type="button"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-600/30 to-amber-500/20 hover:from-amber-600/40 hover:to-amber-500/30 text-amber-300 border border-amber-500/40 font-bold transition-all cursor-pointer active:scale-95 shadow-sm shadow-amber-900/20"
+            >
+              <Code2 className="w-3.5 h-3.5 text-amber-400" />
+              <span>VIP API</span>
+            </button>
+          )}
 
           {/* Reset Button */}
           <button

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Eye, EyeOff, Play, Globe, Sparkles, RefreshCw, Languages, PhoneCall, Plus, Check, CheckCircle2 } from 'lucide-react';
+import { Eye, EyeOff, Play, Globe, Sparkles, RefreshCw, Languages, PhoneCall, Plus, Check, CheckCircle2, Code2, Send, Terminal, ExternalLink } from 'lucide-react';
 import { REGIONS, LANGUAGES } from '../data/numberRanges';
 import { NumberRange, RegionOption, LanguageOption } from '../types';
 
@@ -23,6 +23,7 @@ interface ConfigPanelProps {
   customPhoneInput?: string;
   onChangeCustomPhone?: (val: string) => void;
   lastCreatedNotice?: string;
+  onOpenApiDocs?: () => void;
 }
 
 export const ConfigPanel: React.FC<ConfigPanelProps> = ({
@@ -45,6 +46,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   customPhoneInput = '',
   onChangeCustomPhone,
   lastCreatedNotice = '',
+  onOpenApiDocs,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [autoRotate, setAutoRotate] = useState(false);
@@ -76,6 +78,52 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
         <div className="text-sm sm:text-base font-semibold text-emerald-400/90 flex items-center justify-center gap-1.5">
           <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
           <span>{subBannerText}</span>
+        </div>
+      </div>
+
+      {/* 👑 VIP DEVELOPER API & TERMUX BANNER */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#121829] via-[#161f36] to-[#0f1526] border border-amber-500/30 p-3.5 sm:p-4 shadow-xl shadow-amber-950/20">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-600/10 border border-amber-500/40 flex items-center justify-center shrink-0 shadow-inner">
+              <Terminal className="w-5 h-5 text-amber-400" />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-center gap-1">
+                  👑 SMART EARNING Z — VIP API & TERMUX
+                </span>
+                <span className="text-[9px] uppercase px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                  Phone IP
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-relaxed mt-0.5">
+                নিজের ফোনের সিম/ওয়াইফাই IP দিয়ে Termux টুল রান করুন · ৮টি ফুল API সিস্টেম ও লাইভ ইন্টারেক্টিভ টেস্টার
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {onOpenApiDocs && (
+              <button
+                type="button"
+                onClick={onOpenApiDocs}
+                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black text-xs font-black shadow-md shadow-amber-900/40 flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
+              >
+                <Code2 className="w-3.5 h-3.5" />
+                <span>API Docs</span>
+              </button>
+            )}
+            <a
+              href="https://t.me/Smart_Earning_Z"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm active:scale-95"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>Telegram</span>
+            </a>
+          </div>
         </div>
       </div>
 

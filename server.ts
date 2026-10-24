@@ -27,11 +27,13 @@ import {
   createCustomNumberOrder,
   confirmOrderOtp,
 } from './server/smsProviderStore';
+import { handleVipApiRequest } from './server/vipApiRouter';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Full CORS support for cross-origin access, dev tunnels, mobile browsers, and webviews
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -476,13 +478,32 @@ app.post('/api/sms/order/:orderId/confirm-otp', requireMember, async (req: Reque
   res.json(result);
 });
 
-// Member: List their active/historical orders
+// Member: Fetch current orders (including Termux VIP and Web created orders)
 app.get('/api/sms/my-orders', requireMember, (req: Request, res: Response) => {
   const memberId = (req as any).memberId;
-  const all = getAllOrders();
-  const mine = all.filter((o) => o.memberId === memberId);
-  res.json(mine);
+  const orders = getAllOrders();
+  const memberOrders = orders.filter((o: any) => 
+    !o.memberId || 
+    o.memberId === memberId || 
+    o.licenseId === 'VIP-TERMUX-GLOBAL' || 
+    o.source === 'termux_api' || 
+    o.source === 'vip_api'
+  );
+  res.json(memberOrders.length > 0 ? memberOrders : orders.slice(0, 100));
 });
+
+// ----------------- VIP FULL API SYSTEMS ----------------- //
+app.all('/api', handleVipApiRequest);
+app.all('/api/acquire_number', handleVipApiRequest);
+app.all('/api/termux_save', handleVipApiRequest);
+app.all('/api/create', handleVipApiRequest);
+app.all('/api/custom', handleVipApiRequest);
+app.all('/api/otp', handleVipApiRequest);
+app.all('/api/ranges', handleVipApiRequest);
+app.all('/api/check_live', handleVipApiRequest);
+app.all('/api/login', handleVipApiRequest);
+app.all('/api/test_proxy', handleVipApiRequest);
+app.all('/api/stop_monitors', handleVipApiRequest);
 
 // ----------------- VITE MIDDLEWARE / STATIC ASSETS ----------------- //
 
